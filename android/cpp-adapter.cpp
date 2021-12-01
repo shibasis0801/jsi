@@ -638,9 +638,18 @@ void sendValueToJS(jsi::Runtime &rt, jstring message) {
                                                                                                  str)));
 }
 
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_reactnativejsipoc_jsi_JsiPocModule_nativeInstall(JNIEnv *env, jobject thiz, jlong jsi) {
+#define jniReturn(type) \
+extern "C"              \
+JNIEXPORT type JNICALL
+
+#define jniFunction(name) Java_com_reactnativejsipoc_jsi_JsiPocModule_##name
+
+
+jniReturn(void) jniFunction(nativeInstall) (
+        JNIEnv *env,
+        jobject thiz,
+        jlong jsi
+) {
     auto runtime = reinterpret_cast<facebook::jsi::Runtime *>(jsi);
     runT = runtime;
     if (runtime) {
@@ -651,8 +660,11 @@ Java_com_reactnativejsipoc_jsi_JsiPocModule_nativeInstall(JNIEnv *env, jobject t
     env->GetJavaVM(&java_vm);
     java_object = env->NewGlobalRef(thiz);
 }
-extern "C"
-JNIEXPORT void JNICALL
-Java_com_reactnativejsipoc_jsi_JsiPocModule_setMessage(JNIEnv *env, jobject thiz, jstring message) {
+
+jniReturn(void) jniFunction(setMessage) (
+        JNIEnv *env,
+        jobject thiz,
+        jstring message
+) {
     sendValueToJS(*runT, message);
 }

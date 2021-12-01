@@ -9,6 +9,7 @@
     "start": "react-native start"
   },
   "dependencies": {
+    "@react-native-community/async-storage": "^1.12.1",
     "react": "16.13.1",
     "react-native": "0.63.4",
     "timestamp-nano": "^1.0.0"
